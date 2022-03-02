@@ -1,0 +1,31 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+dependencies {
+    implementation group: 'com.amazonaws', name: 'aws-lambda-java-core', version: '1.2.1'
+    implementation group: 'com.amazonaws', name: 'aws-lambda-java-log4j', version: '1.0.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.13.1'
+}
+
+task buildZip(type: Zip) {
+    baseName = "java-simple-http-endpoint"
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtimeClasspath
+    }
+}
+
+build.dependsOn buildZip
+
+//task wrapper(type: Wrapper) {
+//    gradleVersion = '7.3.3'
+//}
